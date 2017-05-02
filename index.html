@@ -1,0 +1,64 @@
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>GLSL Grapher</title>
+
+  <script src="three.min.js"></script>
+  <script src="GraphingMaterial.js"></script>
+
+  <style>
+    body {
+      background: #AAA;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    window.addEventListener("load", function() {
+      var width = Math.min(window.innerWidth, 600);
+      var height = Math.min(window.innerHeight, 400);
+
+      var canvas = document.createElement("canvas");
+      document.body.appendChild(canvas);
+
+      var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(width, height);
+      renderer.setClearColor(0);
+
+      var scene = new THREE.Scene();
+      var dot = new THREE.Mesh(new THREE.CircleGeometry(5), new THREE.MeshBasicMaterial({color: 0xff0000}));
+      scene.add(dot);
+
+      var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
+      camera.position.z = 50;
+
+      var shaderFunc = `
+        float y(float x) {
+          return sin(x);
+        }
+      `
+
+      var plane = new THREE.Mesh(
+        new THREE.PlaneGeometry(width, height),
+        new GraphingMaterial(shaderFunc)
+      );
+
+      scene.add(plane);
+
+      function render() {
+        requestAnimationFrame(render)
+        renderer.render(scene, camera);
+      }
+      render();
+    });
+  </script>
+</body>
+</html>

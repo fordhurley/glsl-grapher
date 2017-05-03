@@ -6,7 +6,7 @@
   <title>GLSL Grapher</title>
 
   <script src="three.min.js"></script>
-  <script src="GraphingMaterial.js"></script>
+  <script src="GrapherMaterial2D.js"></script>
 
   <style>
     body {
@@ -40,18 +40,44 @@
       var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
       camera.position.z = 50;
 
-      var shaderFunc = `
-        float y(float x) {
-          return sin(x);
-        }
-      `
+      var material = new GrapherMaterial2D({
+        shaderFunc: `
+          float y(float x) {
+            return sin(x);
+          }
+        `,
+        limits: new THREE.Box2(
+          new THREE.Vector2(-Math.PI, -1),
+          new THREE.Vector2(2*Math.PI, 1)
+        ),
+        overColor: 0xffffff,
+        underColor: 0xff0000,
+      });
 
       var plane = new THREE.Mesh(
         new THREE.PlaneGeometry(width, height),
-        new GraphingMaterial(shaderFunc)
+        material
       );
 
       scene.add(plane);
+
+      // Just showing that it's easy to change these things on the fly:
+      document.addEventListener("keydown", function(e) {
+        switch (e.which) {
+          case 37: // left arrow
+            material.limits.min.x -= 0.1;
+            e.preventDefault();
+            break;
+          case 39: // right arrow
+            material.limits.min.x += 0.1;
+            e.preventDefault();
+            break;
+          case 32: // spacebar
+            material.underColor.offsetHSL(0.1, 0, 0);
+            e.preventDefault();
+            break;
+        }
+      });
 
       function render() {
         requestAnimationFrame(render)

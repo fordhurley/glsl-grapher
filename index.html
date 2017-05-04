@@ -7,6 +7,7 @@
 
   <script src="three.min.js"></script>
   <script src="GrapherMaterial2D.js"></script>
+  <script src="Grapher2D.js"></script>
 
   <style>
     body {
@@ -40,40 +41,40 @@
       var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
       camera.position.z = 50;
 
-      var material = new GrapherMaterial2D({
+      var grapher = new Grapher2D({
         shaderFunc: `
           float y(float x) {
             return sin(x);
           }
         `,
         limits: new THREE.Box2(
-          new THREE.Vector2(-Math.PI, -1),
+          new THREE.Vector2(-Math.PI, -2),
           new THREE.Vector2(2*Math.PI, 1)
         ),
         overColor: 0xffffff,
         underColor: 0xff0000,
       });
+      grapher.scale.set(width, height, 1);
 
-      var plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(width, height),
-        material
-      );
+      scene.add(grapher);
 
-      scene.add(plane);
+      var limits = grapher.graph.material.limits;
 
       // Just showing that it's easy to change these things on the fly:
       document.addEventListener("keydown", function(e) {
         switch (e.which) {
           case 37: // left arrow
-            material.limits.min.x -= 0.1;
+            limits.min.x -= 0.1
+            grapher.setLimits(limits);
             e.preventDefault();
             break;
           case 39: // right arrow
-            material.limits.min.x += 0.1;
+            limits.min.x += 0.1;
+            grapher.setLimits(limits);
             e.preventDefault();
             break;
           case 32: // spacebar
-            material.underColor.offsetHSL(0.1, 0, 0);
+            grapher.graph.material.underColor.offsetHSL(0.1, 0, 0);
             e.preventDefault();
             break;
         }

@@ -6,7 +6,7 @@
 
     this.limits = options.limits;
     if (this.limits === undefined) {
-      this.limits = new THREE.Box3(
+      this.limits = new THREE.Box2(
         new THREE.Vector2(0, 0),
         new THREE.Vector2(1, 1)
       );
@@ -51,15 +51,6 @@
         void main() {
           float over = step(y(vUV.x), vUV.y); // 0 if under, 1 if over
           vec3 color = mix(underColor, overColor, over);
-
-          // Indicate quadrants:
-          if (vUV.x < 0.0) {
-            color *= 0.9;
-          }
-          if (vUV.y < 0.0) {
-            color *= 0.9;
-          }
-
           gl_FragColor = vec4(color, 1.0);
         }
       `,

@@ -1,6 +1,22 @@
 (function() {
   "use strict";
 
+  function makeFragmentShader(shaderFunc) {
+    return `
+      varying vec2 vUV;
+      uniform vec3 overColor;
+      uniform vec3 underColor;
+
+      ${shaderFunc}
+
+      void main() {
+        float over = step(y(vUV.x), vUV.y); // 0 if under, 1 if over
+        vec3 color = mix(underColor, overColor, over);
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `
+  }
+
   var GraphMaterial2D = function(options) {
     this.shaderFunc = options.shaderFunc;
 
@@ -41,23 +57,17 @@
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
-      fragmentShader: `
-        varying vec2 vUV;
-        uniform vec3 overColor;
-        uniform vec3 underColor;
-
-        ${this.shaderFunc}
-
-        void main() {
-          float over = step(y(vUV.x), vUV.y); // 0 if under, 1 if over
-          vec3 color = mix(underColor, overColor, over);
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `,
+      fragmentShader: makeFragmentShader(this.shaderFunc),
     });
   };
 
   GraphMaterial2D.prototype = Object.create(THREE.ShaderMaterial.prototype);
+
+  GraphMaterial2D.prototype.setShaderFunc = function(shaderFunc) {
+    this.shaderFunc = shaderFunc;
+    this.fragmentShader = makeFragmentShader(this.shaderFunc);
+    this.needsUpdate = true;
+  }
 
   window.GraphMaterial2D = GraphMaterial2D;
 })();

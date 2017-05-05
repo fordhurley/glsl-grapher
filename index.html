@@ -5,6 +5,9 @@
 
   <title>GLSL Grapher</title>
 
+  <script src="ace.min.js"></script>
+  <script src="ace.mode-glsl.min.js"></script>
+
   <script src="three.min.js"></script>
   <script src="GraphMaterial2D.js"></script>
   <script src="Graph2D.js"></script>
@@ -13,19 +16,16 @@
 
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+      text-align: center;
       font-family: sans-serif;
+      font-size: 14px;
     }
 
     .graph {
+      margin: auto;
       position: relative;
       width: 600px;
-      height: 500px;
+      height: 400px;
     }
 
     .graph canvas {
@@ -65,101 +65,114 @@
       text-align: right;
       transform: rotate(-90deg);
     }
+
+    #editor {
+      margin: auto;
+      margin-top: 40px;
+      width: 600px;
+      height: 200px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="graph">
-    <canvas></canvas>
-    <div class="labels x-labels">
-      <span class="min">-4</span>
-      <span class="max">2</span>
-    </div>
-    <div class="labels y-labels">
-      <span class="max"></span>
-      <span class="min"></span>
-    </div>
+<div class="graph">
+  <canvas></canvas>
+  <div class="labels x-labels">
+    <span class="min">-4</span>
+    <span class="max">2</span>
   </div>
+  <div class="labels y-labels">
+    <span class="max"></span>
+    <span class="min"></span>
+  </div>
+</div>
 
-  <script>
-    window.addEventListener("load", function() {
-      var canvas = document.querySelector(".graph canvas");
-      var style = window.getComputedStyle(canvas);
-      var width = parseInt(style.width);
-      var height = parseInt(style.height);
+<div id="editor">float y(float x) {
+  return sin(x) / x;
+}</div>
 
-      var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(width, height);
-      renderer.setClearColor(0);
+<script>
+  window.addEventListener("load", function() {
+    var editor = ace.edit("editor");
+    // editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/glsl");
 
-      var scene = new THREE.Scene();
-      var dot = new THREE.Mesh(new THREE.CircleGeometry(5), new THREE.MeshBasicMaterial({color: 0xff0000}));
-      scene.add(dot);
+    var canvas = document.querySelector(".graph canvas");
+    var style = window.getComputedStyle(canvas);
+    var width = parseInt(style.width);
+    var height = parseInt(style.height);
 
-      var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
-      camera.position.z = 50;
+    var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    renderer.setClearColor(0xdd0000);
 
-      var graph = new Graph2D({
-        shaderFunc: `
-          float y(float x) {
-            return sin(x) / x;
-          }
-        `,
-        limits: new THREE.Box2(
-          new THREE.Vector2(-2*Math.PI, -2),
-          new THREE.Vector2(4*Math.PI, 4)
-        ),
-        overColor: 0xeeeeee,
-        underColor: 0x000ff0,
-      });
-      graph.scale.set(width, height, 1);
+    var scene = new THREE.Scene();
 
-      scene.add(graph);
+    var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
+    camera.position.z = 50;
 
-      var controls = new GraphControls(graph, canvas);
-      controls.attachListeners();
-
-      var labels = {
-        x: {
-          min: document.querySelector(".graph .x-labels .min"),
-          max: document.querySelector(".graph .x-labels .max"),
-        },
-        y: {
-          min: document.querySelector(".graph .y-labels .min"),
-          max: document.querySelector(".graph .y-labels .max"),
-        },
-      };
-
-      function round(value, range) {
-        var digits = 0;
-        while (range <= 20) {
-          digits++;
-          range *= 10;
-        }
-        return value.toFixed(digits);
-      }
-
-      function updateLabels(limits) {
-        var range = limits.getSize();
-        labels.x.min.textContent = round(limits.min.x, range.x);
-        labels.x.max.textContent = round(limits.max.x, range.x);
-        labels.y.min.textContent = round(limits.min.y, range.y);
-        labels.y.max.textContent = round(limits.max.y, range.y);
-      }
-
-      graph.addEventListener("changed:limits", function(e) {
-        updateLabels(e.limits);
-      });
-
-      updateLabels(graph.material.limits);
-
-      function render() {
-        requestAnimationFrame(render)
-        renderer.render(scene, camera);
-      }
-      render();
+    var graph = new Graph2D({
+      shaderFunc: editor.getValue(),
+      limits: new THREE.Box2(
+        new THREE.Vector2(-2*Math.PI, -2),
+        new THREE.Vector2(4*Math.PI, 4)
+      ),
+      overColor: 0xeeeeee,
+      underColor: 0x000ff0,
     });
-  </script>
+    graph.scale.set(width, height, 1);
+    scene.add(graph);
+
+    editor.getSession().on('change', function(e) {
+      graph.material.setShaderFunc(editor.getValue());
+    });
+
+    var controls = new GraphControls(graph, canvas);
+    controls.attachListeners();
+
+    var labels = {
+      x: {
+        min: document.querySelector(".graph .x-labels .min"),
+        max: document.querySelector(".graph .x-labels .max"),
+      },
+      y: {
+        min: document.querySelector(".graph .y-labels .min"),
+        max: document.querySelector(".graph .y-labels .max"),
+      },
+    };
+
+    function round(value, range) {
+      var digits = 0;
+      while (range <= 20) {
+        digits++;
+        range *= 10;
+      }
+      return value.toFixed(digits);
+    }
+
+    function updateLabels(limits) {
+      var range = limits.getSize();
+      labels.x.min.textContent = round(limits.min.x, range.x);
+      labels.x.max.textContent = round(limits.max.x, range.x);
+      labels.y.min.textContent = round(limits.min.y, range.y);
+      labels.y.max.textContent = round(limits.max.y, range.y);
+    }
+
+    graph.addEventListener("changed:limits", function(e) {
+      updateLabels(e.limits);
+    });
+
+    updateLabels(graph.material.limits);
+
+    function render() {
+      requestAnimationFrame(render)
+      renderer.render(scene, camera);
+    }
+    render();
+  });
+</script>
+
 </body>
 </html>

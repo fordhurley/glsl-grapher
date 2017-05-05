@@ -24,6 +24,7 @@
       axesGeometry,
       new THREE.LineBasicMaterial({color: 0})
     );
+    this.axes.position.z = 1;
     this.updateAxes();
     this.add(this.axes);
   };

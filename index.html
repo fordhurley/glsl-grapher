@@ -13,7 +13,6 @@
 
   <style>
     body {
-      background: #AAA;
       margin: 0;
       padding: 0;
       display: flex;
@@ -25,8 +24,8 @@
 <body>
   <script>
     window.addEventListener("load", function() {
-      var width = Math.min(window.innerWidth, 600);
-      var height = Math.min(window.innerHeight, 400);
+      var width = Math.min(window.innerWidth, 800);
+      var height = Math.min(window.innerHeight, 600);
 
       var canvas = document.createElement("canvas");
       document.body.appendChild(canvas);
@@ -46,15 +45,15 @@
       var graph = new Graph2D({
         shaderFunc: `
           float y(float x) {
-            return sin(x);
+            return sin(x) / x;
           }
         `,
         limits: new THREE.Box2(
-          new THREE.Vector2(-Math.PI, -2),
-          new THREE.Vector2(2*Math.PI, 1)
+          new THREE.Vector2(-2*Math.PI, -2),
+          new THREE.Vector2(4*Math.PI, 4)
         ),
-        overColor: 0xffffff,
-        underColor: 0xff0000,
+        overColor: 0xeeeeee,
+        underColor: 0x000ff0,
       });
       graph.scale.set(width, height, 1);
 

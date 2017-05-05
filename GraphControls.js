@@ -57,7 +57,7 @@
     scroll: function(e) {
       event.preventDefault();
 
-      var zoomAmount = this.limits.getSize().multiplyScalar(0.05);
+      var zoomAmount = this.limits.getSize().multiplyScalar(0.025);
       if (event.deltaY < 0) {
         zoomAmount.negate();
       }

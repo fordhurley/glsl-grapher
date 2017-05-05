@@ -6,8 +6,10 @@
   <title>GLSL Grapher</title>
 
   <script src="three.min.js"></script>
-  <script src="GrapherMaterial2D.js"></script>
-  <script src="Grapher2D.js"></script>
+  <script src="GraphMaterial2D.js"></script>
+  <script src="Graph2D.js"></script>
+
+  <script src="GraphControls.js"></script>
 
   <style>
     body {
@@ -41,7 +43,7 @@
       var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
       camera.position.z = 50;
 
-      var grapher = new Grapher2D({
+      var graph = new Graph2D({
         shaderFunc: `
           float y(float x) {
             return sin(x);
@@ -54,31 +56,11 @@
         overColor: 0xffffff,
         underColor: 0xff0000,
       });
-      grapher.scale.set(width, height, 1);
+      graph.scale.set(width, height, 1);
 
-      scene.add(grapher);
+      scene.add(graph);
 
-      var limits = grapher.graph.material.limits;
-
-      // Just showing that it's easy to change these things on the fly:
-      document.addEventListener("keydown", function(e) {
-        switch (e.which) {
-          case 37: // left arrow
-            limits.min.x -= 0.1
-            grapher.setLimits(limits);
-            e.preventDefault();
-            break;
-          case 39: // right arrow
-            limits.min.x += 0.1;
-            grapher.setLimits(limits);
-            e.preventDefault();
-            break;
-          case 32: // spacebar
-            grapher.graph.material.underColor.offsetHSL(0.1, 0, 0);
-            e.preventDefault();
-            break;
-        }
-      });
+      new GraphControls(graph, canvas);
 
       function render() {
         requestAnimationFrame(render)

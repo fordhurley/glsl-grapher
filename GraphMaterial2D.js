@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  var GrapherMaterial2D = function(options) {
+  var GraphMaterial2D = function(options) {
     this.shaderFunc = options.shaderFunc;
 
     this.limits = options.limits;
@@ -57,7 +57,7 @@
     });
   };
 
-  GrapherMaterial2D.prototype = Object.create(THREE.ShaderMaterial.prototype);
+  GraphMaterial2D.prototype = Object.create(THREE.ShaderMaterial.prototype);
 
-  window.GrapherMaterial2D = GrapherMaterial2D;
+  window.GraphMaterial2D = GraphMaterial2D;
 })();

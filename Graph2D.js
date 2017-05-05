@@ -41,6 +41,7 @@
   Graph2D.prototype.setLimits = function(limits) {
     this.material.limits.copy(limits);
     this.updateAxes();
+    this.dispatchEvent({type: "changed:limits", limits: limits});
   };
 
   window.Graph2D = Graph2D;

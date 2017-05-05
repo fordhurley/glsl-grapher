@@ -18,17 +18,75 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 14px;
+      font-family: sans-serif;
+    }
+
+    .graph {
+      position: relative;
+      width: 600px;
+      height: 500px;
+    }
+
+    .graph canvas {
+      width: calc(100% - 80px);
+      height: calc(100% - 80px);
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      bottom: 40px;
+      left: 40px;
+    }
+
+    .graph .labels {
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+    }
+
+    .graph .x-labels {
+      bottom: 0;
+      left: 40px;
+      width: calc(100% - 80px);
+      height: 40px;
+    }
+
+    .graph .y-labels {
+      left: 0;
+      top: 40px;
+      width: 40px;
+      height: calc(100% - 80px);
+      flex-direction: column;
+    }
+
+    .graph .y-labels span {
+      text-align: right;
+      transform: rotate(-90deg);
     }
   </style>
 </head>
 <body>
+
+  <div class="graph">
+    <canvas></canvas>
+    <div class="labels x-labels">
+      <span class="min">-4</span>
+      <span class="max">2</span>
+    </div>
+    <div class="labels y-labels">
+      <span class="max"></span>
+      <span class="min"></span>
+    </div>
+  </div>
+
   <script>
     window.addEventListener("load", function() {
-      var width = Math.min(window.innerWidth, 800);
-      var height = Math.min(window.innerHeight, 600);
-
-      var canvas = document.createElement("canvas");
-      document.body.appendChild(canvas);
+      var canvas = document.querySelector(".graph canvas");
+      var style = window.getComputedStyle(canvas);
+      var width = parseInt(style.width);
+      var height = parseInt(style.height);
 
       var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -59,7 +117,42 @@
 
       scene.add(graph);
 
-      new GraphControls(graph, canvas);
+      var controls = new GraphControls(graph, canvas);
+      controls.attachListeners();
+
+      var labels = {
+        x: {
+          min: document.querySelector(".graph .x-labels .min"),
+          max: document.querySelector(".graph .x-labels .max"),
+        },
+        y: {
+          min: document.querySelector(".graph .y-labels .min"),
+          max: document.querySelector(".graph .y-labels .max"),
+        },
+      };
+
+      function round(value, range) {
+        var digits = 0;
+        while (range <= 20) {
+          digits++;
+          range *= 10;
+        }
+        return value.toFixed(digits);
+      }
+
+      function updateLabels(limits) {
+        var range = limits.getSize();
+        labels.x.min.textContent = round(limits.min.x, range.x);
+        labels.x.max.textContent = round(limits.max.x, range.x);
+        labels.y.min.textContent = round(limits.min.y, range.y);
+        labels.y.max.textContent = round(limits.max.y, range.y);
+      }
+
+      graph.addEventListener("changed:limits", function(e) {
+        updateLabels(e.limits);
+      });
+
+      updateLabels(graph.material.limits);
 
       function render() {
         requestAnimationFrame(render)

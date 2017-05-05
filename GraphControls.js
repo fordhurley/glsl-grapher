@@ -9,23 +9,25 @@
 
     this.limits = graph.material.limits.clone();
     this.dragging = false;
-
-    domElement.addEventListener("mousedown", this.pointerDown.bind(this), false);
-    domElement.addEventListener("touchstart", this.pointerDown.bind(this), false);
-
-    domElement.addEventListener("mousemove", this.pointerMove.bind(this), false);
-    domElement.addEventListener("touchmove", this.pointerMove.bind(this), false);
-
-    domElement.addEventListener("mouseup", this.pointerUp.bind(this), false);
-    domElement.addEventListener("mouseout", this.pointerUp.bind(this), false);
-    domElement.addEventListener("touchend", this.pointerUp.bind(this), false);
-    domElement.addEventListener("touchcancel", this.pointerUp.bind(this), false);
-    domElement.addEventListener("touchleave", this.pointerUp.bind(this), false);
-
-    domElement.addEventListener("mousewheel", this.scroll.bind(this), false);
   };
 
   GraphControls.prototype = {
+    attachListeners: function() {
+      this.domElement.addEventListener("mousedown", this.pointerDown.bind(this), false);
+      this.domElement.addEventListener("touchstart", this.pointerDown.bind(this), false);
+
+      this.domElement.addEventListener("mousemove", this.pointerMove.bind(this), false);
+      this.domElement.addEventListener("touchmove", this.pointerMove.bind(this), false);
+
+      this.domElement.addEventListener("mouseup", this.pointerUp.bind(this), false);
+      this.domElement.addEventListener("mouseout", this.pointerUp.bind(this), false);
+      this.domElement.addEventListener("touchend", this.pointerUp.bind(this), false);
+      this.domElement.addEventListener("touchcancel", this.pointerUp.bind(this), false);
+      this.domElement.addEventListener("touchleave", this.pointerUp.bind(this), false);
+
+      this.domElement.addEventListener("mousewheel", this.scroll.bind(this), false);
+    },
+
     pointerDown: function(e) {
       if (this.dragging) { return; }
       this.dragging = true;

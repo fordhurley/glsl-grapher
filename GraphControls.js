@@ -3,12 +3,20 @@
   // This is largely based on:
   // https://github.com/mrdoob/three.js/blob/7ac632bf/examples/js/controls/TransformControls.js
 
+  function pointerLocation(pointer, domElement) {
+    var rect = domElement.getBoundingClientRect();
+    var x = pointer.clientX - rect.left;
+    var y = pointer.clientY - rect.top;
+    return new THREE.Vector2(x, -y); // our coordinate system is flipped
+  }
+
   var GraphControls = function(graph, domElement) {
     this.graph = graph;
     this.domElement = domElement;
 
     this.limits = graph.material.limits.clone();
     this.dragging = false;
+    this.prevPoint = null;
   };
 
   GraphControls.prototype = {
@@ -33,6 +41,9 @@
       this.dragging = true;
 
       event.preventDefault();
+
+      var pointer = event.changedTouches ? event.changedTouches[0] : event;
+      this.prevPoint = pointerLocation(pointer, this.domElement);
     },
 
     pointerMove: function(e) {
@@ -41,17 +52,23 @@
       event.preventDefault();
 
       var pointer = event.changedTouches ? event.changedTouches[0] : event;
+      var currPoint = pointerLocation(pointer, this.domElement);
+
       var scale = this.limits.getSize().divide(this.graph.scale);
 
-      this.limits.min.x -= pointer.movementX * scale.x;
-      this.limits.max.x -= pointer.movementX * scale.x;
-      this.limits.min.y += pointer.movementY * scale.y;
-      this.limits.max.y += pointer.movementY * scale.y;
+      var delta = currPoint.clone().sub(this.prevPoint);
+      delta.multiply(scale);
+
+      this.limits.min.sub(delta);
+      this.limits.max.sub(delta);
       this.graph.setLimits(this.limits);
+
+      this.prevPoint = currPoint;
     },
 
     pointerUp: function(e) {
       this.dragging = false;
+      this.prevPoint = null;
 
       event.preventDefault();
     },

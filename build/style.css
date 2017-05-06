@@ -1,0 +1,60 @@
+body {
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 14px; }
+
+header {
+  margin: 40px auto 0;
+  width: 100%;
+  max-width: 600px; }
+  header h1 {
+    margin: 0; }
+
+section {
+  margin: auto;
+  width: 100%;
+  max-width: 600px; }
+
+.graph {
+  position: relative; }
+  .graph:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 70%; }
+  .graph canvas {
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    bottom: 40px;
+    left: 40px; }
+  .graph .labels {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row; }
+  .graph .x-labels {
+    bottom: 0;
+    left: 40px;
+    width: calc(100% - 80px);
+    height: 40px; }
+  .graph .y-labels {
+    left: 0;
+    top: 40px;
+    width: 40px;
+    height: calc(100% - 80px);
+    flex-direction: column; }
+    .graph .y-labels span {
+      text-align: right;
+      transform: rotate(-90deg); }
+
+#editor {
+  margin-top: 20px;
+  width: 100%;
+  height: 200px; }
+
+#about {
+  text-align: left; }

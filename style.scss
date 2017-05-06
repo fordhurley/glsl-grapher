@@ -1,0 +1,84 @@
+body {
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+header {
+  margin: 40px auto 0;
+  width: 100%;
+  max-width: 600px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+section {
+  margin: auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+.graph {
+  $axisSize: 40px;
+
+  position: relative;
+
+  // Super magical for maintaining aspect ratio:
+  // https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 70%;
+  }
+
+  canvas {
+    width: calc(100% - #{2 * $axisSize});
+    height: calc(100% - #{2 * $axisSize});
+    position: absolute;
+    top: $axisSize;
+    right: $axisSize;
+    bottom: $axisSize;
+    left: $axisSize;
+  }
+
+  .labels {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .x-labels {
+    bottom: 0;
+    left: $axisSize;
+    width: calc(100% - #{2 * $axisSize});
+    height: $axisSize;
+  }
+
+  .y-labels {
+    left: 0;
+    top: $axisSize;
+    width: $axisSize;
+    height: calc(100% - #{2 * $axisSize});
+    flex-direction: column;
+
+    span {
+      text-align: right;
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+#editor {
+  margin-top: 20px;
+  width: 100%;
+  height: 200px;
+}
+
+#about {
+  text-align: left;
+}

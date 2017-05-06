@@ -5,6 +5,8 @@
 
   <title>GLSL Grapher</title>
 
+  <link rel="stylesheet" href="build/style.css">
+
   <script src="ace.min.js"></script>
   <script src="ace.mode-glsl.min.js"></script>
 
@@ -13,89 +15,60 @@
   <script src="Graph2D.js"></script>
 
   <script src="GraphControls.js"></script>
-
-  <style>
-    body {
-      text-align: center;
-      font-family: sans-serif;
-      font-size: 14px;
-    }
-
-    .graph {
-      margin: auto;
-      position: relative;
-      width: 600px;
-      height: 400px;
-    }
-
-    .graph canvas {
-      width: calc(100% - 80px);
-      height: calc(100% - 80px);
-      position: absolute;
-      top: 40px;
-      right: 40px;
-      bottom: 40px;
-      left: 40px;
-    }
-
-    .graph .labels {
-      position: absolute;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-direction: row;
-    }
-
-    .graph .x-labels {
-      bottom: 0;
-      left: 40px;
-      width: calc(100% - 80px);
-      height: 40px;
-    }
-
-    .graph .y-labels {
-      left: 0;
-      top: 40px;
-      width: 40px;
-      height: calc(100% - 80px);
-      flex-direction: column;
-    }
-
-    .graph .y-labels span {
-      text-align: right;
-      transform: rotate(-90deg);
-    }
-
-    #editor {
-      margin: auto;
-      margin-top: 40px;
-      width: 600px;
-      height: 200px;
-    }
-  </style>
 </head>
 <body>
 
-<div class="graph">
-  <canvas></canvas>
-  <div class="labels x-labels">
-    <span class="min">-4</span>
-    <span class="max">2</span>
-  </div>
-  <div class="labels y-labels">
-    <span class="max"></span>
-    <span class="min"></span>
-  </div>
-</div>
+<header>
+  <h1>GLSL Grapher</h1>
+</header>
 
-<div id="editor">float y(float x) {
+<section id="tool">
+  <div class="graph">
+    <canvas></canvas>
+    <div class="labels x-labels">
+      <span class="min">-4</span>
+      <span class="max">2</span>
+    </div>
+    <div class="labels y-labels">
+      <span class="max"></span>
+      <span class="min"></span>
+    </div>
+  </div>
+
+  <div id="editor">float y(float x) {
   return sin(x) / x;
 }</div>
+</section>
+
+<section id="about">
+  <h2>What is this?</h2>
+  <p>
+    This is a visualization tool for GLSL functions, using WebGL.
+  </p>
+
+  <h2>Why?</h2>
+  <p>
+    When writing shader code, it can be hard to visualize the output of a given
+    function. There are a million other graphing tools, but all require you to
+    translate your shader code into another format. This allows you to graph the
+    output of your <em>actual</em> shader code.
+  </p>
+
+  <h2>Can you show me an example?</h2>
+  <p>
+    I'm working on adding a few more. Some ideas:
+    <ul>
+      <li>Easing functions</li>
+      <li>RGB &harr; HSV conversions</li>
+      <li>Noise</li>
+      <li>Smoothstep</li>
+    </ul>
+  </p>
+</section>
 
 <script>
   window.addEventListener("load", function() {
     var editor = ace.edit("editor");
-    // editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/glsl");
 
     var canvas = document.querySelector(".graph canvas");
@@ -165,6 +138,20 @@
     });
 
     updateLabels(graph.material.limits);
+
+    window.addEventListener("resize", function(e) {
+      canvas.style = "";
+      var style = window.getComputedStyle(canvas);
+      var width = parseInt(style.width);
+      var height = parseInt(style.height);
+      renderer.setSize(width, height);
+      camera.left = -width/2;
+      camera.right = width/2;
+      camera.top = height/2;
+      camera.bottom = -height/2;
+      camera.updateProjectionMatrix();
+      graph.scale.set(width, height, 1);
+    });
 
     function render() {
       requestAnimationFrame(render)

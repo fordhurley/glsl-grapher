@@ -4,14 +4,14 @@
   function makeFragmentShader(shaderFunc) {
     return `
       varying vec2 vUV;
-      uniform vec3 overColor;
-      uniform vec3 underColor;
+      uniform vec3 color;
 
       ${shaderFunc}
 
       void main() {
-        float over = step(y(vUV.x), vUV.y); // 0 if under, 1 if over
-        vec3 color = mix(underColor, overColor, over);
+        if (y(vUV.x) < vUV.y) {
+          discard;
+        }
         gl_FragColor = vec4(color, 1.0);
       }
     `
@@ -28,24 +28,17 @@
       );
     }
 
-    this.overColor = options.overColor;
-    if (this.overColor === undefined) {
-      this.overColor = 0xffffff;
+    this.color = options.color;
+    if (this.color === undefined) {
+      this.color = 0x0000ff;
     }
-    this.overColor = new THREE.Color(this.overColor);
-
-    this.underColor = options.underColor;
-    if (this.underColor === undefined) {
-      this.underColor = 0x0000ff;
-    }
-    this.underColor = new THREE.Color(this.underColor);
+    this.color = new THREE.Color(this.color);
 
     THREE.ShaderMaterial.call(this, {
       uniforms: {
         minLimit: {value: this.limits.min},
         maxLimit: {value: this.limits.max},
-        overColor: {value: this.overColor},
-        underColor: {value: this.underColor},
+        color: {value: this.color},
       },
       vertexShader: `
         varying vec2 vUV;

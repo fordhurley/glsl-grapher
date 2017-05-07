@@ -11,8 +11,7 @@
       new GraphMaterial2D({
         shaderFunc: options.shaderFunc,
         limits: options.limits,
-        overColor: options.overColor,
-        underColor: options.underColor,
+        color: options.color,
       })
     );
 

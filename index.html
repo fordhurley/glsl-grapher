@@ -81,12 +81,16 @@
     var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
-    renderer.setClearColor(0xdd0000);
+    renderer.setClearColor(0xf9f9f9);
 
     var scene = new THREE.Scene();
 
     var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
     camera.position.z = 50;
+
+    function render() {
+      renderer.render(scene, camera);
+    }
 
     var graph = new Graph2D({
       shaderFunc: editor.getValue(),
@@ -94,13 +98,12 @@
         new THREE.Vector2(-2*Math.PI, -2),
         new THREE.Vector2(4*Math.PI, 4)
       ),
-      overColor: 0xeeeeee,
-      underColor: 0x000ff0,
+      color: 0x3483BE,
     });
     graph.scale.set(width, height, 1);
     scene.add(graph);
 
-    editor.getSession().on('change', function(e) {
+    editor.getSession().on("change", function(e) {
       graph.material.setShaderFunc(editor.getValue());
       render();
     });
@@ -126,6 +129,7 @@
       limits.min.y = parseFloat(labels.y.min.value);
       limits.max.y = parseFloat(labels.y.max.value);
       graph.setLimits(limits);
+      render();
     }
 
     [labels.x.min, labels.x.max, labels.y.min, labels.y.max].forEach(function(label) {
@@ -166,10 +170,6 @@
       graph.scale.set(width, height, 1);
       render();
     });
-
-    function render() {
-      renderer.render(scene, camera);
-    }
 
     updateLabels(graph.material.limits);
     render();

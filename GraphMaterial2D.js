@@ -34,7 +34,7 @@
     }
     this.color = new THREE.Color(this.color);
 
-    THREE.ShaderMaterial.call(this, {
+    THREE.RawShaderMaterial.call(this, {
       uniforms: {
         minLimit: {value: this.limits.min},
         maxLimit: {value: this.limits.max},

@@ -14,6 +14,8 @@ section {
   margin: auto;
   width: 100%;
   max-width: 600px; }
+  section#tool {
+    max-width: 800px; }
 
 .graph {
   position: relative; }
@@ -30,12 +32,14 @@ section {
     right: 40px;
     bottom: 40px;
     left: 40px; }
-  .graph .labels {
+  .graph .x-labels, .graph .y-labels {
     position: absolute;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row; }
+    .graph .x-labels .name, .graph .y-labels .name {
+      font-style: italic; }
   .graph .x-labels {
     bottom: 0;
     left: 40px;

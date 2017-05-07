@@ -18,6 +18,10 @@ section {
   margin: auto;
   width: 100%;
   max-width: 600px;
+
+  &#tool {
+    max-width: 800px;
+  }
 }
 
 .graph {
@@ -44,12 +48,16 @@ section {
     left: $axisSize;
   }
 
-  .labels {
+  .x-labels, .y-labels {
     position: absolute;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+
+    .name {
+      font-style: italic;
+    }
   }
 
   .x-labels {

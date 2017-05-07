@@ -108,6 +108,15 @@
       render();
     });
 
+    function resizeEditor() {
+      var newHeight = editor.getSession().getScreenLength() * editor.renderer.lineHeight;
+      newHeight += editor.renderer.scrollBar.getWidth();
+      newHeight = Math.max(newHeight, 100);
+      editor.container.style.height = newHeight + "px";
+      editor.resize();
+    }
+    editor.getSession().on("change", resizeEditor);
+
     var controls = new GraphControls(graph, canvas);
     controls.attachListeners();
 
@@ -169,8 +178,10 @@
       camera.updateProjectionMatrix();
       graph.scale.set(width, height, 1);
       render();
+      resizeEditor();
     });
 
+    resizeEditor();
     updateLabels(graph.material.limits);
     render();
   });

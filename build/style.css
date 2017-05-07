@@ -13,9 +13,7 @@ header {
 section {
   margin: auto;
   width: 100%;
-  max-width: 600px; }
-  section#tool {
-    max-width: 800px; }
+  max-width: 800px; }
 
 .graph {
   position: relative; }
@@ -76,8 +74,8 @@ section {
       transform: translateY(-50%) rotate(-90deg) translate(-50%); }
 
 #editor {
-  margin: 20px 40px 40px;
-  width: calc(100% - 80px);
+  margin: 20px auto 40px;
+  max-width: 720px;
   height: 220px;
   border: 1px solid #eee; }
 

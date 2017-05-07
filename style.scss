@@ -14,17 +14,13 @@ header {
   }
 }
 
+$axisSize: 40px;
+
 section {
   margin: auto;
   width: 100%;
-  max-width: 600px;
-
-  &#tool {
-    max-width: 800px;
-  }
+  max-width: 800px;
 }
-
-$axisSize: 40px;
 
 .graph {
   position: relative;
@@ -101,8 +97,8 @@ $axisSize: 40px;
 }
 
 #editor {
-  margin: 20px $axisSize 40px;
-  width: calc(100% - #{2 * $axisSize});
+  margin: 20px auto 40px;
+  max-width: 800px - 2 * $axisSize;
   height: 220px;
   border: 1px solid #eee;
 }

@@ -38,8 +38,25 @@ section {
     justify-content: space-between;
     align-items: center;
     flex-direction: row; }
+    .graph .x-labels input, .graph .y-labels input {
+      border-radius: 0.2em;
+      padding: 0.25em;
+      border: none;
+      outline: 0;
+      width: auto;
+      font-size: 1em; }
+      .graph .x-labels input:hover, .graph .x-labels input:focus, .graph .y-labels input:hover, .graph .y-labels input:focus {
+        background-color: lightblue; }
+      .graph .x-labels input.min, .graph .y-labels input.min {
+        text-align: left; }
+      .graph .x-labels input.name, .graph .y-labels input.name {
+        text-align: center; }
+      .graph .x-labels input.max, .graph .y-labels input.max {
+        text-align: right; }
     .graph .x-labels .name, .graph .y-labels .name {
       font-style: italic; }
+      .graph .x-labels .name:hover, .graph .x-labels .name:focus, .graph .y-labels .name:hover, .graph .y-labels .name:focus {
+        background: none; }
   .graph .x-labels {
     bottom: 0;
     left: 40px;
@@ -51,9 +68,12 @@ section {
     width: 40px;
     height: calc(100% - 80px);
     flex-direction: column; }
-    .graph .y-labels span {
-      text-align: right;
+    .graph .y-labels input {
       transform: rotate(-90deg); }
+    .graph .y-labels .min {
+      transform: translateY(50%) rotate(-90deg) translate(50%); }
+    .graph .y-labels .max {
+      transform: translateY(-50%) rotate(-90deg) translate(-50%); }
 
 #editor {
   margin-top: 20px;

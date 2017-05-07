@@ -55,8 +55,28 @@ section {
     align-items: center;
     flex-direction: row;
 
+    input {
+      border-radius: 0.2em;
+      padding: 0.25em;
+      border: none;
+      outline: 0;
+      width: auto;
+      font-size: 1em;
+
+      &:hover, &:focus {
+        background-color: lightblue;
+      }
+
+      &.min { text-align: left; }
+      &.name { text-align: center; }
+      &.max { text-align: right; }
+    }
+
     .name {
       font-style: italic;
+      &:hover, &:focus {
+        background: none;
+      }
     }
   }
 
@@ -74,10 +94,9 @@ section {
     height: calc(100% - #{2 * $axisSize});
     flex-direction: column;
 
-    span {
-      text-align: right;
-      transform: rotate(-90deg);
-    }
+    input { transform: rotate(-90deg); }
+    .min { transform: translateY(50%) rotate(-90deg) translate(50%); }
+    .max { transform: translateY(-50%) rotate(-90deg) translate(-50%); }
   }
 }
 

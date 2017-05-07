@@ -26,14 +26,14 @@
   <div class="graph">
     <canvas></canvas>
     <div class="x-labels">
-      <span class="min">-4</span>
-      <span class="name">x</span>
-      <span class="max">2</span>
+      <input type="number" size="1" class="min"></input>
+      <input type="text" size="1" class="name" value="x" readonly></input>
+      <input type="number" size="1" class="max"></input>
     </div>
     <div class="y-labels">
-      <span class="max"></span>
-      <span class="name">y</span>
-      <span class="min"></span>
+      <input type="number" size="1" class="max"></input>
+      <input type="text" size="1" class="name" value="y" readonly></input>
+      <input type="number" size="1" class="min"></input>
     </div>
   </div>
 
@@ -118,21 +118,32 @@
       },
     };
 
-    function round(value, range) {
-      var digits = 0;
-      while (range <= 20) {
-        digits++;
-        range *= 10;
-      }
-      return value.toFixed(digits);
+    function updateLimitsFromLabels() {
+      var limits = graph.material.limits;
+      limits.min.x = parseFloat(labels.x.min.value);
+      limits.max.x = parseFloat(labels.x.max.value);
+      limits.min.y = parseFloat(labels.y.min.value);
+      limits.max.y = parseFloat(labels.y.max.value);
+      graph.setLimits(limits);
     }
 
+    [labels.x.min, labels.x.max, labels.y.min, labels.y.max].forEach(function(label) {
+      label.addEventListener("blur", updateLimitsFromLabels);
+      label.addEventListener("keyup", function(e) {
+        if (e.which === 13) { label.blur() }
+      });
+    });
+
     function updateLabels(limits) {
-      var range = limits.getSize();
-      labels.x.min.textContent = round(limits.min.x, range.x);
-      labels.x.max.textContent = round(limits.max.x, range.x);
-      labels.y.min.textContent = round(limits.min.y, range.y);
-      labels.y.max.textContent = round(limits.max.y, range.y);
+      var step = limits.getSize().multiplyScalar(0.1);
+      labels.x.min.value = limits.min.x.toPrecision(3);
+      labels.x.min.step = step.x.toPrecision(2);
+      labels.x.max.value = limits.max.x.toPrecision(3);
+      labels.x.max.step = labels.x.min.step;
+      labels.y.min.value = limits.min.y.toPrecision(3);
+      labels.y.min.step = step.y.toPrecision(2);
+      labels.y.max.value = limits.max.y.toPrecision(3);
+      labels.y.max.step = labels.y.min.step;
     }
 
     graph.addEventListener("changed:limits", function(e) {

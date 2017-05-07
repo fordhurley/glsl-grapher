@@ -14,7 +14,6 @@
     this.graph = graph;
     this.domElement = domElement;
 
-    this.limits = graph.material.limits.clone();
     this.dragging = false;
     this.prevPoint = null;
   };
@@ -54,14 +53,14 @@
       var pointer = event.changedTouches ? event.changedTouches[0] : event;
       var currPoint = pointerLocation(pointer, this.domElement);
 
-      var scale = this.limits.getSize().divide(this.graph.scale);
+      var scale = this.graph.material.limits.getSize().divide(this.graph.scale);
 
       var delta = currPoint.clone().sub(this.prevPoint);
       delta.multiply(scale);
 
-      this.limits.min.sub(delta);
-      this.limits.max.sub(delta);
-      this.graph.setLimits(this.limits);
+      this.graph.material.limits.min.sub(delta);
+      this.graph.material.limits.max.sub(delta);
+      this.graph.setLimits(this.graph.material.limits);
 
       this.prevPoint = currPoint;
     },
@@ -76,13 +75,13 @@
     scroll: function(e) {
       event.preventDefault();
 
-      var zoomAmount = this.limits.getSize().multiplyScalar(0.025);
+      var zoomAmount = this.graph.material.limits.getSize().multiplyScalar(0.025);
       if (event.deltaY < 0) {
         zoomAmount.negate();
       }
 
-      this.limits.expandByVector(zoomAmount);
-      this.graph.setLimits(this.limits);
+      this.graph.material.limits.expandByVector(zoomAmount);
+      this.graph.setLimits(this.graph.material.limits);
     },
   };
 

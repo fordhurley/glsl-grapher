@@ -15,6 +15,7 @@
   <script src="Graph2D.js"></script>
 
   <script src="GraphControls.js"></script>
+  <script src="examples.js"></script>
 </head>
 <body>
 
@@ -38,14 +39,18 @@
   </div>
 
   <div id="editor">float y(float x) {
-  return sin(x) / x;
+  return sin(x);
 }</div>
 </section>
 
 <section id="about">
-  <h2>What is this?</h2>
+  <h2>What?</h2>
   <p>
-    This is a visualization tool for GLSL functions, using WebGL.
+    This is a visualization tool for GLSL shader functions, using WebGL. It will
+    graph any function with the signature <code>float y(float x)</code>. View the
+    source, including a <code>THREE.Material</code> that can be used in other
+    THREE.js projects:
+    <a href="https://github.com/fordhurley/glsl-grapher">fordhurley/glsl-grapher</a>
   </p>
 
   <h2>Why?</h2>
@@ -53,19 +58,17 @@
     When writing shader code, it can be hard to visualize the output of a given
     function. There are a million other graphing tools, but all require you to
     translate your shader code into another format. This allows you to graph the
-    output of your <em>actual</em> shader code.
+    output of your <em>actual</em> code.
   </p>
 
-  <h2>Can you show me an example?</h2>
-  <p>
-    I'm working on adding a few more. Some ideas:
-    <ul>
-      <li>Easing functions</li>
-      <li>RGB &harr; HSV conversions</li>
-      <li>Noise</li>
-      <li>Smoothstep</li>
-    </ul>
-  </p>
+  <h2>Examples?</h2>
+  <ul>
+    <li><a href="#step" class="example">Step</a></li>
+    <li><a href="#smoothstep" class="example">Smoothstep</a></li>
+    <li><a href="#multiSmoothstep" class="example">Multi-smoothstep</a></li>
+    <li><a href="#gradientNoise" class="example">Gradient noise</a></li>
+  </ul>
+
 </section>
 
 <script>
@@ -96,7 +99,7 @@
       shaderFunc: editor.getValue(),
       limits: new THREE.Box2(
         new THREE.Vector2(-2*Math.PI, -2),
-        new THREE.Vector2(4*Math.PI, 4)
+        new THREE.Vector2(2*Math.PI, 2)
       ),
       color: 0x3483BE,
     });
@@ -149,15 +152,14 @@
     });
 
     function updateLabels(limits) {
-      var step = limits.getSize().multiplyScalar(0.1);
       labels.x.min.value = limits.min.x.toPrecision(3);
-      labels.x.min.step = step.x.toPrecision(2);
       labels.x.max.value = limits.max.x.toPrecision(3);
-      labels.x.max.step = labels.x.min.step;
       labels.y.min.value = limits.min.y.toPrecision(3);
-      labels.y.min.step = step.y.toPrecision(2);
       labels.y.max.value = limits.max.y.toPrecision(3);
-      labels.y.max.step = labels.y.min.step;
+
+      var step = limits.getSize().multiplyScalar(0.1);
+      labels.x.min.step = labels.x.max.step = step.x.toPrecision(2);
+      labels.y.min.step = labels.y.max.step = step.y.toPrecision(2);
     }
 
     graph.addEventListener("changed:limits", function(e) {
@@ -181,9 +183,35 @@
       resizeEditor();
     });
 
+    function loadExample(name) {
+      var example = GRAPH_EXAMPLES[name];
+      if (!example) {
+        console.warn("No example named:", name);
+        return;
+      }
+      var limits = example.limits || new THREE.Box2(
+        new THREE.Vector2(-0.25, -0.25),
+        new THREE.Vector2(1.25, 1.25)
+      );
+      editor.setValue(example.shaderFunc);
+      editor.gotoLine(0, 0);
+      graph.setLimits(limits);
+    }
+
+    document.querySelectorAll(".example").forEach(function(link) {
+      var name = link.hash.slice(1);
+      link.addEventListener("click", function(e) {
+        loadExample(name)
+      });
+    });
+
     resizeEditor();
     updateLabels(graph.material.limits);
     render();
+
+    if (window.location.hash) {
+      loadExample(window.location.hash.slice(1));
+    }
   });
 </script>
 

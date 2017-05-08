@@ -12,6 +12,7 @@
 
   <script src="three.min.js"></script>
   <script src="GraphMaterial2D.js"></script>
+  <script src="GraphAxes2D.js"></script>
   <script src="Graph2D.js"></script>
 
   <script src="GraphControls.js"></script>
@@ -107,8 +108,7 @@
     scene.add(graph);
 
     editor.getSession().on("change", function(e) {
-      graph.material.setShaderFunc(editor.getValue());
-      render();
+      graph.setShaderFunc(editor.getValue());
     });
 
     function resizeEditor() {
@@ -135,13 +135,12 @@
     };
 
     function updateLimitsFromLabels() {
-      var limits = graph.material.limits;
+      var limits = graph.getLimits();
       limits.min.x = parseFloat(labels.x.min.value);
       limits.max.x = parseFloat(labels.x.max.value);
       limits.min.y = parseFloat(labels.y.min.value);
       limits.max.y = parseFloat(labels.y.max.value);
       graph.setLimits(limits);
-      render();
     }
 
     [labels.x.min, labels.x.max, labels.y.min, labels.y.max].forEach(function(label) {
@@ -166,6 +165,8 @@
       updateLabels(e.limits);
       render();
     });
+
+    graph.addEventListener("changed:shaderFunc", render);
 
     window.addEventListener("resize", function(e) {
       canvas.style = "";
@@ -206,7 +207,7 @@
     });
 
     resizeEditor();
-    updateLabels(graph.material.limits);
+    updateLabels(graph.getLimits());
     render();
 
     if (window.location.hash) {

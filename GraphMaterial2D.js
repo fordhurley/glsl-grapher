@@ -2,6 +2,9 @@
   "use strict";
 
   function makeFragmentShader(shaderFunc) {
+    if (!shaderFunc) {
+      shaderFunc = "float y(float x) { return x; }";
+    }
     return `
       varying vec2 vUV;
       uniform vec3 color;

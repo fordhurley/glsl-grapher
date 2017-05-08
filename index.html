@@ -73,6 +73,30 @@
 </section>
 
 <script>
+  function clearURLHash() {
+    // Note that this seems a bit slow, so don't call it from a tight loop.
+    history.replaceState("", document.title, window.location.pathname);
+  }
+
+  function getFromLocalStorage() {
+    var shaderFunc = localStorage.getItem("shaderFunc");
+    if (!shaderFunc) {
+      return undefined;
+    }
+    var limits = localStorage.getItem("limits");
+    if (limits) {
+      limits = JSON.parse(limits);
+      limits = new THREE.Box2(
+        new THREE.Vector2(limits.min.x, limits.min.y),
+        new THREE.Vector2(limits.max.x, limits.max.y)
+      );
+    }
+    return {
+      shaderFunc: shaderFunc,
+      limits: limits,
+    };
+  }
+
   window.addEventListener("load", function() {
     var editor = ace.edit("editor");
     editor.getSession().setMode("ace/mode/glsl");
@@ -108,6 +132,7 @@
     scene.add(graph);
 
     editor.getSession().on("change", function(e) {
+      clearURLHash();
       graph.setShaderFunc(editor.getValue());
     });
 
@@ -162,11 +187,15 @@
     }
 
     graph.addEventListener("changed:limits", function(e) {
+      localStorage.setItem("limits", JSON.stringify(e.limits));
       updateLabels(e.limits);
       render();
     });
 
-    graph.addEventListener("changed:shaderFunc", render);
+    graph.addEventListener("changed:shaderFunc", function(e) {
+      localStorage.setItem("shaderFunc", e.shaderFunc);
+      render();
+    });
 
     window.addEventListener("resize", function(e) {
       canvas.style = "";
@@ -184,19 +213,23 @@
       resizeEditor();
     });
 
+    function loadGraph(shaderFunc, limits) {
+      limits = limits || new THREE.Box2(
+        new THREE.Vector2(-0.25, -0.25),
+        new THREE.Vector2(1.25, 1.25)
+      );
+      editor.setValue(shaderFunc);
+      editor.gotoLine(0, 0);
+      graph.setLimits(limits);
+    }
+
     function loadExample(name) {
       var example = GRAPH_EXAMPLES[name];
       if (!example) {
         console.warn("No example named:", name);
         return;
       }
-      var limits = example.limits || new THREE.Box2(
-        new THREE.Vector2(-0.25, -0.25),
-        new THREE.Vector2(1.25, 1.25)
-      );
-      editor.setValue(example.shaderFunc);
-      editor.gotoLine(0, 0);
-      graph.setLimits(limits);
+      loadGraph(example.shaderFunc, example.limits);
     }
 
     document.querySelectorAll(".example").forEach(function(link) {
@@ -212,6 +245,12 @@
 
     if (window.location.hash) {
       loadExample(window.location.hash.slice(1));
+    } else {
+      clearURLHash();
+      var graphData = getFromLocalStorage();
+      if (graphData) {
+        loadGraph(graphData.shaderFunc, graphData.limits);
+      }
     }
   });
 </script>

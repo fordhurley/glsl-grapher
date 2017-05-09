@@ -1,4 +1,7 @@
+/* global THREE */
+
 (function() {
+  "use strict";
 
   // This is largely based on:
   // https://github.com/mrdoob/three.js/blob/7ac632bf/examples/js/controls/TransformControls.js

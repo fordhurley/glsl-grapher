@@ -1,3 +1,5 @@
+/* global THREE */
+
 window.GRAPH_EXAMPLES = {
   step: {
     shaderFunc: "float y(float x) {\n  return step(0.5, x);\n}",

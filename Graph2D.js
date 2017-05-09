@@ -1,3 +1,5 @@
+/* global THREE, GraphMaterial2D, GraphAxes2D */
+
 (function() {
   "use strict";
 
@@ -33,5 +35,4 @@
   };
 
   window.Graph2D = Graph2D;
-
 })();

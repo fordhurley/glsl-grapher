@@ -1,3 +1,5 @@
+/* global THREE */
+
 (function() {
   "use strict";
 
@@ -17,7 +19,7 @@
         }
         gl_FragColor = vec4(color, 1.0);
       }
-    `
+    `;
   }
 
   var GraphMaterial2D = function(options) {
@@ -63,7 +65,7 @@
     this.shaderFunc = shaderFunc;
     this.fragmentShader = makeFragmentShader(this.shaderFunc);
     this.needsUpdate = true;
-  }
+  };
 
   window.GraphMaterial2D = GraphMaterial2D;
 })();

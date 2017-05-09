@@ -1,3 +1,5 @@
+/* global THREE */
+
 (function() {
   "use strict";
 
@@ -14,15 +16,23 @@
     var fract = value / Math.pow(10, exp);
     var niceFract;
     if (round) {
-      if (fract < 1.5) { niceFract = 1; }
-      else if (fract < 3) { niceFract = 2; }
-      else if (fract < 7) { niceFract = 5; }
-      else { niceFract = 10; }
+      if (fract < 1.5) {
+        niceFract = 1;
+      } else if (fract < 3) {
+        niceFract = 2;
+      } else if (fract < 7) {
+        niceFract = 5;
+      } else {
+        niceFract = 10;
+      }
+    } else if (fract <= 1) {
+      niceFract = 1;
+    } else if (fract <= 2) {
+      niceFract = 2;
+    } else if (fract <= 5) {
+      niceFract = 5;
     } else {
-      if (fract <= 1) { niceFract = 1; }
-      else if (fract <= 2) { niceFract = 2; }
-      else if (fract <= 5) { niceFract = 5; }
-      else { niceFract = 10; }
+      niceFract = 10;
     }
     return niceFract * Math.pow(10, exp);
   }
@@ -65,7 +75,7 @@
     }
 
     this.setLimits(limits);
-  }
+  };
 
   GraphAxes2D.prototype = Object.create(THREE.Object3D.prototype);
 

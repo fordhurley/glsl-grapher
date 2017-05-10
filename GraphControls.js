@@ -56,14 +56,19 @@
       var pointer = event.changedTouches ? event.changedTouches[0] : event;
       var currPoint = pointerLocation(pointer, this.domElement);
 
-      var scale = this.graph.material.limits.getSize().divide(this.graph.scale);
+      var limits = this.graph.getLimits();
+      var scale = limits.getSize();
+      var size = this.graph.renderer.getSize();
+      scale.x /= size.width;
+      scale.y /= size.height;
+      console.log(scale);
 
       var delta = currPoint.clone().sub(this.prevPoint);
       delta.multiply(scale);
 
-      this.graph.material.limits.min.sub(delta);
-      this.graph.material.limits.max.sub(delta);
-      this.graph.setLimits(this.graph.material.limits);
+      limits.min.sub(delta);
+      limits.max.sub(delta);
+      this.graph.setLimits(limits);
 
       this.prevPoint = currPoint;
     },
@@ -78,13 +83,15 @@
     scroll: function(e) {
       event.preventDefault();
 
-      var zoomAmount = this.graph.material.limits.getSize().multiplyScalar(0.025);
+      var limits = this.graph.getLimits();
+
+      var zoomAmount = limits.getSize().multiplyScalar(0.025);
       if (event.deltaY < 0) {
         zoomAmount.negate();
       }
 
-      this.graph.material.limits.expandByVector(zoomAmount);
-      this.graph.setLimits(this.graph.material.limits);
+      limits.expandByVector(zoomAmount);
+      this.graph.setLimits(limits);
     },
   };
 

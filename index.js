@@ -17,58 +17,6 @@
     editor.resize();
   }
 
-  function setupRenderer(canvas) {
-    var style = window.getComputedStyle(canvas);
-    var width = parseInt(style.width, 10);
-    var height = parseInt(style.height, 10);
-    var renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(width, height);
-    renderer.setClearColor(0xf9f9f9);
-
-    var scene = new THREE.Scene();
-
-    var camera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 100);
-    camera.position.z = 50;
-
-    return {
-      width: width,
-      height: height,
-      scene: scene,
-      camera: camera,
-      render: function() {
-        renderer.render(scene, camera);
-      },
-      resize: function() {
-        canvas.style = "";
-        style = window.getComputedStyle(canvas);
-        width = parseInt(style.width, 10);
-        height = parseInt(style.height, 10);
-        renderer.setSize(width, height);
-        camera.left = -width/2;
-        camera.right = width/2;
-        camera.top = height/2;
-        camera.bottom = -height/2;
-        camera.updateProjectionMatrix();
-        return {width: width, height: height};
-      },
-    };
-  }
-
-  function setupGraph(renderer, shaderFunc) {
-    var graph = new Graph2D({
-      shaderFunc: shaderFunc,
-      limits: new THREE.Box2(
-        new THREE.Vector2(-2*Math.PI, -2),
-        new THREE.Vector2(2*Math.PI, 2)
-      ),
-      color: 0x3483BE,
-    });
-    graph.scale.set(renderer.width, renderer.height, 1);
-    renderer.scene.add(graph);
-    return graph;
-  }
-
   function setupLabels(graph) {
     var labels = {
       x: {
@@ -175,8 +123,15 @@
   window.addEventListener("load", function() {
     var editor = setupEditor("editor");
     var canvas = document.querySelector(".graph canvas");
-    var renderer = setupRenderer(canvas);
-    var graph = setupGraph(renderer, editor.getValue());
+    var graph = new Graph2D({
+      canvas: canvas,
+      shaderFunc: editor.getValue(),
+      limits: new THREE.Box2(
+        new THREE.Vector2(-2*Math.PI, -2),
+        new THREE.Vector2(2*Math.PI, 2)
+      ),
+      color: 0x3483BE,
+    });
     var labels = setupLabels(graph);
 
     var controls = new GraphControls(graph, canvas);
@@ -185,25 +140,20 @@
     editor.getSession().on("change", function(e) {
       clearURLHash();
       graph.setShaderFunc(editor.getValue());
+      resizeEditor(editor);
     });
-
-    editor.getSession().on("change", resizeEditor.bind(window, editor));
 
     graph.addEventListener("changed:limits", function(e) {
       localStorage.setItem("limits", JSON.stringify(e.limits));
       labels.updateLabelsFromLimits();
-      renderer.render();
     });
 
     graph.addEventListener("changed:shaderFunc", function(e) {
       localStorage.setItem("shaderFunc", e.shaderFunc);
-      renderer.render();
     });
 
     window.addEventListener("resize", function(e) {
-      var size = renderer.resize();
-      graph.scale.set(size.width, size.height, 1);
-      renderer.render();
+      graph.resize();
       resizeEditor(editor);
     });
 
@@ -216,6 +166,6 @@
 
     loadGraphIfNeeded(editor, graph);
     resizeEditor(editor);
-    renderer.render();
+    graph.render();
   });
 })();

@@ -73,6 +73,17 @@ section {
     .graph .y-labels .max {
       transform: translateY(-50%) rotate(-90deg) translate(-50%); }
 
+.limit-presets {
+  text-align: right;
+  margin-right: 40px; }
+  .limit-presets img {
+    width: 2.5em;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 1em; }
+    .limit-presets img:last-child {
+      margin-right: 0; }
+
 #editor {
   margin: 20px auto 40px;
   max-width: 720px;

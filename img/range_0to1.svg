@@ -1,0 +1,24 @@
+<svg width="156px" height="156px" viewBox="0 0 156 156" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="0-to-1" transform="translate(3.000000, 3.000000)">
+            <rect id="Rectangle" stroke="#000000" stroke-width="5" x="0" y="0" width="150" height="150" rx="8"></rect>
+            <text id="1" font-family="sans-serif" font-size="48" font-weight="normal" letter-spacing="1.84615397" fill="#22252C">
+                <tspan x="114" y="46">1</tspan>
+            </text>
+            <text id="0" font-family="sans-serif" font-size="48" font-weight="normal" letter-spacing="1.84615397" fill="#22252C">
+                <tspan x="10" y="133">0</tspan>
+            </text>
+            <g id="Group-2" transform="translate(39.000000, 28.000000)" stroke="#000000">
+                <g id="Group">
+                    <path d="M12.8106061,77.8412146 L12.8106061,8.05120482" id="Path-2" stroke-width="5"></path>
+                    <polygon id="Triangle" fill="#000000" points="12.1363636 0 24.2727273 17.4442771 0 17.4442771"></polygon>
+                </g>
+                <g id="Group" transform="translate(49.804546, 75.226621) rotate(-270.000000) translate(-49.804546, -75.226621) translate(37.304546, 36.226621)">
+                    <path d="M12.8106061,77.8412146 L12.8106061,8.05120482" id="Path-2" stroke-width="5"></path>
+                    <polygon id="Triangle" fill="#000000" points="12.1363636 0 24.2727273 17.4442771 0 17.4442771"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

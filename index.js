@@ -164,6 +164,23 @@
       });
     });
 
+    document.querySelectorAll(".limit-presets img").forEach(function(button) {
+      button.addEventListener("click", function(e) {
+        var limits = graph.getLimits();
+        switch (this.className) {
+          case "negative-one-to-one":
+            limits.min.x = limits.min.y = -1;
+            limits.max.x = limits.max.y = 1;
+            break;
+          case "zero-to-one":
+          default:
+            limits.min.x = limits.min.y = 0;
+            limits.max.x = limits.max.y = 1;
+        }
+        graph.setLimits(limits);
+      });
+    });
+
     loadGraphIfNeeded(editor, graph);
     resizeEditor(editor);
     graph.render();

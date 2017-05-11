@@ -96,6 +96,20 @@ section {
   }
 }
 
+.limit-presets {
+  text-align: right;
+  margin-right: $axisSize;
+  img {
+    width: 2.5em;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 1em;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 #editor {
   margin: 20px auto 40px;
   max-width: 800px - 2 * $axisSize;

@@ -57,15 +57,21 @@ section {
       height: 100%;
     }
 
-    span {
+    .min, .name, .max {
       display: inline-block;
       position: absolute;
       border-radius: 0.2em;
       padding: 0.25em;
+      outline: 0;
       font-size: 1em;
+    }
 
-      &:hover, &:focus {
+    .min, .max {
+      &:hover {
         background-color: lightblue;
+      }
+      &:focus {
+        background: none;
       }
     }
   }
@@ -83,9 +89,6 @@ section {
       left: 50%;
       transform: translateX(-50%);
       font-style: italic;
-      &:hover, &:focus {
-        background: none;
-      }
     }
     .max {
       right: 0;

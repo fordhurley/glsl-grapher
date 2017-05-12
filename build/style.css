@@ -39,14 +39,17 @@ section {
       position: relative;
       width: 100%;
       height: 100%; }
-    .graph .x-labels span, .graph .y-labels span {
+    .graph .x-labels .min, .graph .x-labels .name, .graph .x-labels .max, .graph .y-labels .min, .graph .y-labels .name, .graph .y-labels .max {
       display: inline-block;
       position: absolute;
       border-radius: 0.2em;
       padding: 0.25em;
+      outline: 0;
       font-size: 1em; }
-      .graph .x-labels span:hover, .graph .x-labels span:focus, .graph .y-labels span:hover, .graph .y-labels span:focus {
-        background-color: lightblue; }
+    .graph .x-labels .min:hover, .graph .x-labels .max:hover, .graph .y-labels .min:hover, .graph .y-labels .max:hover {
+      background-color: lightblue; }
+    .graph .x-labels .min:focus, .graph .x-labels .max:focus, .graph .y-labels .min:focus, .graph .y-labels .max:focus {
+      background: none; }
   .graph .x-labels {
     bottom: 0;
     left: 40px;
@@ -58,8 +61,6 @@ section {
       left: 50%;
       transform: translateX(-50%);
       font-style: italic; }
-      .graph .x-labels .name:hover, .graph .x-labels .name:focus {
-        background: none; }
     .graph .x-labels .max {
       right: 0; }
   .graph .y-labels {

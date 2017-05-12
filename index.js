@@ -39,6 +39,24 @@
     }
 
     [labels.x.min, labels.x.max, labels.y.min, labels.y.max].forEach(function(label) {
+      label.addEventListener("focus", function(e) {
+        // Select text: http://stackoverflow.com/a/3806004/576932
+        setTimeout(function() {
+          var sel;
+          var range;
+          if (window.getSelection && document.createRange) {
+            range = document.createRange();
+            range.selectNodeContents(label);
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } else if (document.body.createTextRange) {
+            range = document.body.createTextRange();
+            range.moveToElementText(label);
+            range.select();
+          }
+        }, 1);
+      });
       label.addEventListener("blur", updateLimitsFromLabels);
       label.addEventListener("keydown", function(e) {
         if (e.which === 13) {

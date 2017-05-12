@@ -14,6 +14,10 @@ header {
   }
 }
 
+a {
+  text-decoration: none;
+}
+
 $axisSize: 40px;
 
 section {
@@ -119,4 +123,8 @@ section {
 
 #about {
   text-align: left;
+}
+
+footer {
+  color: #666;
 }

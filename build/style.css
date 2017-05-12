@@ -10,6 +10,9 @@ header {
   header h1 {
     margin: 0; }
 
+a {
+  text-decoration: none; }
+
 section {
   margin: auto;
   width: 100%;
@@ -92,3 +95,6 @@ section {
 
 #about {
   text-align: left; }
+
+footer {
+  color: #666; }

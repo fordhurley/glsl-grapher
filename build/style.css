@@ -34,47 +34,49 @@ section {
     bottom: 40px;
     left: 40px; }
   .graph .x-labels, .graph .y-labels {
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row; }
-    .graph .x-labels input, .graph .y-labels input {
+    position: absolute; }
+    .graph .x-labels .labels, .graph .y-labels .labels {
+      position: relative;
+      width: 100%;
+      height: 100%; }
+    .graph .x-labels span, .graph .y-labels span {
+      display: inline-block;
+      position: absolute;
       border-radius: 0.2em;
       padding: 0.25em;
-      border: none;
-      outline: 0;
-      width: auto;
       font-size: 1em; }
-      .graph .x-labels input:hover, .graph .x-labels input:focus, .graph .y-labels input:hover, .graph .y-labels input:focus {
+      .graph .x-labels span:hover, .graph .x-labels span:focus, .graph .y-labels span:hover, .graph .y-labels span:focus {
         background-color: lightblue; }
-      .graph .x-labels input.min, .graph .y-labels input.min {
-        text-align: left; }
-      .graph .x-labels input.name, .graph .y-labels input.name {
-        text-align: center; }
-      .graph .x-labels input.max, .graph .y-labels input.max {
-        text-align: right; }
-    .graph .x-labels .name, .graph .y-labels .name {
-      font-style: italic; }
-      .graph .x-labels .name:hover, .graph .x-labels .name:focus, .graph .y-labels .name:hover, .graph .y-labels .name:focus {
-        background: none; }
   .graph .x-labels {
     bottom: 0;
     left: 40px;
     width: calc(100% - 80px);
     height: 40px; }
+    .graph .x-labels .min {
+      left: 0; }
+    .graph .x-labels .name {
+      left: 50%;
+      transform: translateX(-50%);
+      font-style: italic; }
+      .graph .x-labels .name:hover, .graph .x-labels .name:focus {
+        background: none; }
+    .graph .x-labels .max {
+      right: 0; }
   .graph .y-labels {
-    left: 0;
     top: 40px;
-    width: 40px;
+    left: 0;
     height: calc(100% - 80px);
-    flex-direction: column; }
-    .graph .y-labels input {
-      transform: rotate(-90deg); }
+    width: 40px; }
     .graph .y-labels .min {
-      transform: translateY(50%) rotate(-90deg) translate(50%); }
+      bottom: 0;
+      right: 0; }
+    .graph .y-labels .name {
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0; }
     .graph .y-labels .max {
-      transform: translateY(-50%) rotate(-90deg) translate(-50%); }
+      top: 0;
+      right: 0; }
 
 .limit-presets {
   text-align: right;

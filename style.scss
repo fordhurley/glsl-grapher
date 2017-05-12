@@ -50,32 +50,22 @@ section {
 
   .x-labels, .y-labels {
     position: absolute;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
 
-    input {
+    .labels {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    span {
+      display: inline-block;
+      position: absolute;
       border-radius: 0.2em;
       padding: 0.25em;
-      border: none;
-      outline: 0;
-      width: auto;
       font-size: 1em;
 
       &:hover, &:focus {
         background-color: lightblue;
-      }
-
-      &.min { text-align: left; }
-      &.name { text-align: center; }
-      &.max { text-align: right; }
-    }
-
-    .name {
-      font-style: italic;
-      &:hover, &:focus {
-        background: none;
       }
     }
   }
@@ -85,18 +75,42 @@ section {
     left: $axisSize;
     width: calc(100% - #{2 * $axisSize});
     height: $axisSize;
+
+    .min {
+      left: 0;
+    }
+    .name {
+      left: 50%;
+      transform: translateX(-50%);
+      font-style: italic;
+      &:hover, &:focus {
+        background: none;
+      }
+    }
+    .max {
+      right: 0;
+    }
   }
 
   .y-labels {
-    left: 0;
     top: $axisSize;
-    width: $axisSize;
+    left: 0;
     height: calc(100% - #{2 * $axisSize});
-    flex-direction: column;
+    width: $axisSize;
 
-    input { transform: rotate(-90deg); }
-    .min { transform: translateY(50%) rotate(-90deg) translate(50%); }
-    .max { transform: translateY(-50%) rotate(-90deg) translate(-50%); }
+    .min {
+      bottom: 0;
+      right: 0;
+    }
+    .name {
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+    .max {
+      top: 0;
+      right: 0;
+    }
   }
 }
 

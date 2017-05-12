@@ -31,30 +31,29 @@
 
     function updateLimitsFromLabels() {
       var limits = graph.getLimits();
-      limits.min.x = parseFloat(labels.x.min.value);
-      limits.max.x = parseFloat(labels.x.max.value);
-      limits.min.y = parseFloat(labels.y.min.value);
-      limits.max.y = parseFloat(labels.y.max.value);
+      limits.min.x = parseFloat(labels.x.min.textContent);
+      limits.max.x = parseFloat(labels.x.max.textContent);
+      limits.min.y = parseFloat(labels.y.min.textContent);
+      limits.max.y = parseFloat(labels.y.max.textContent);
       graph.setLimits(limits);
     }
 
     [labels.x.min, labels.x.max, labels.y.min, labels.y.max].forEach(function(label) {
       label.addEventListener("blur", updateLimitsFromLabels);
-      label.addEventListener("keyup", function(e) {
-        if (e.which === 13) { label.blur(); }
+      label.addEventListener("keydown", function(e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          label.blur();
+        }
       });
     });
 
     function updateLabelsFromLimits() {
       var limits = graph.getLimits();
-      labels.x.min.value = limits.min.x.toPrecision(3);
-      labels.x.max.value = limits.max.x.toPrecision(3);
-      labels.y.min.value = limits.min.y.toPrecision(3);
-      labels.y.max.value = limits.max.y.toPrecision(3);
-
-      var step = limits.getSize().multiplyScalar(0.1);
-      labels.x.min.step = labels.x.max.step = step.x.toPrecision(2);
-      labels.y.min.step = labels.y.max.step = step.y.toPrecision(2);
+      labels.x.min.textContent = limits.min.x.toPrecision(3);
+      labels.x.max.textContent = limits.max.x.toPrecision(3);
+      labels.y.min.textContent = limits.min.y.toPrecision(3);
+      labels.y.max.textContent = limits.max.y.toPrecision(3);
     }
 
     updateLabelsFromLimits();

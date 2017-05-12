@@ -127,8 +127,8 @@
       canvas: canvas,
       shaderFunc: editor.getValue(),
       limits: new THREE.Box2(
-        new THREE.Vector2(-2*Math.PI, -2),
-        new THREE.Vector2(2*Math.PI, 2)
+        new THREE.Vector2(-2, -2),
+        new THREE.Vector2(2, 2)
       ),
       color: 0x3483BE,
     });

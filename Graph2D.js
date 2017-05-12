@@ -40,7 +40,7 @@
     },
 
     resize: function() {
-      this.canvas.style = "";
+      this.canvas.removeAttribute("style");
       var style = window.getComputedStyle(this.canvas);
       var width = parseInt(style.width, 10);
       var height = parseInt(style.height, 10);

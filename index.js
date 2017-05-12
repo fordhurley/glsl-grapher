@@ -67,8 +67,8 @@
 
   function loadGraph(editor, graph, shaderFunc, limits) {
     limits = limits || new THREE.Box2(
-      new THREE.Vector2(-0.1, -0.1),
-      new THREE.Vector2(1.1, 1.1)
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(1, 1)
     );
     editor.setValue(shaderFunc);
     editor.gotoLine(0, 0);

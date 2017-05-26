@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px; }
 
 header {
@@ -8,7 +8,11 @@ header {
   width: 100%;
   max-width: 600px; }
   header h1 {
-    margin: 0; }
+    margin: 0;
+    font-size: 3.5em; }
+    @media only screen and (max-width: 375px) {
+      header h1 {
+        font-size: 2em; } }
 
 a {
   text-decoration: none; }

@@ -37,10 +37,10 @@
   }
 
   function calculateTicks(min, max) {
-    var range = niceNum(max-min, false);
+    var range = max-min;
     var spacing = niceNum(range / (NUM_TICKS-1), true);
     return {
-      min: Math.floor(min / spacing) * spacing,
+      min: Math.floor(min / spacing) * spacing + spacing,
       spacing: spacing,
     };
   }

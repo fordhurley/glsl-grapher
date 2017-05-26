@@ -10,7 +10,6 @@
   }
 
   // Ispired by http://www.realtimerendering.com/resources/GraphicsGems/gems/Label.c
-
   function niceNum(value, round) {
     var exp = Math.floor(Math.log10(value));
     var fract = value / Math.pow(10, exp);

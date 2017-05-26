@@ -61,7 +61,6 @@
       var size = this.graph.renderer.getSize();
       scale.x /= size.width;
       scale.y /= size.height;
-      console.log(scale);
 
       var delta = currPoint.clone().sub(this.prevPoint);
       delta.multiply(scale);

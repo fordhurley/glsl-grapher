@@ -5,7 +5,9 @@
 
   function setupEditor(elementID) {
     var editor = ace.edit("editor");
-    editor.getSession().setMode("ace/mode/glsl");
+    var session = editor.getSession();
+    session.setMode("ace/mode/glsl");
+    session.setTabSize(2);
     return editor;
   }
 

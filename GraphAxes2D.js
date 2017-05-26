@@ -1,4 +1,4 @@
-/* global THREE */
+/* global THREE, GraphLabel */
 
 (function() {
   "use strict";
@@ -70,6 +70,10 @@
       line = new THREE.LineSegments(crossGeom, gridMaterial);
       line.position.z = 1; // under the axes
       this.add(line);
+      line.xLabel = new GraphLabel();
+      this.add(line.xLabel);
+      line.yLabel = new GraphLabel();
+      this.add(line.yLabel);
       this.gridLines.push(line);
     }
 
@@ -94,6 +98,29 @@
       var y = ticks.y.min + i*ticks.y.spacing;
       line.position.x = graphToLocal(x, limits.min.x, limits.max.x);
       line.position.y = graphToLocal(y, limits.min.y, limits.max.y);
+
+      var text;
+      line.xLabel.visible = x !== 0;
+      if (line.xLabel.visible) {
+        text = x.toString();
+        if (text.length > 5) {
+          text = x.toPrecision(3);
+        }
+        line.xLabel.setText(text);
+        line.xLabel.position.x = graphToLocal(x, limits.min.x, limits.max.x);
+        line.xLabel.position.y = graphToLocal(0, limits.min.y, limits.max.y);
+      }
+
+      line.yLabel.visible = y !== 0;
+      if (line.yLabel.visible) {
+        text = y.toString();
+        if (text.length > 5) {
+          text = y.toPrecision(3);
+        }
+        line.yLabel.setText(text);
+        line.yLabel.position.x = graphToLocal(0, limits.min.x, limits.max.x);
+        line.yLabel.position.y = graphToLocal(y, limits.min.y, limits.max.y);
+      }
     });
   };
 

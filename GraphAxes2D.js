@@ -70,9 +70,9 @@
       line = new THREE.LineSegments(crossGeom, gridMaterial);
       line.position.z = 1; // under the axes
       this.add(line);
-      line.xLabel = new GraphLabel();
+      line.xLabel = new GraphLabel(true);
       this.add(line.xLabel);
-      line.yLabel = new GraphLabel();
+      line.yLabel = new GraphLabel(false);
       this.add(line.yLabel);
       this.gridLines.push(line);
     }

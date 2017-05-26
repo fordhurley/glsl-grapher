@@ -9,7 +9,9 @@
   // should come from the graph in some way.
   var SCALE = new THREE.Vector2(0.5, 1).multiplyScalar(1/2048);
 
-  var GraphLabel = function(text) {
+  var GraphLabel = function(isForX) {
+    this.isForX = isForX;
+
     this.canvas = document.createElement("canvas");
     this.canvas.height = SIZE*DPR * 2;
     this.context = this.canvas.getContext("2d");
@@ -20,11 +22,8 @@
     var material = new THREE.MeshBasicMaterial({
       transparent: true,
       map: this.texture,
-      color: "red",
     });
     THREE.Mesh.call(this, geometry, material);
-
-    this.setText(text || "");
   };
 
   GraphLabel.prototype = Object.create(THREE.Mesh.prototype);
@@ -54,8 +53,8 @@
 
   GraphLabel.prototype.setupContext = function() {
     this.context.font = SIZE*DPR + "px sans-serif";
-    this.context.textBaseline = "middle";
-    this.context.textAlign = "center";
+    this.context.textBaseline = this.isForX ? "bottom" : "middle";
+    this.context.textAlign = this.isForX ? "center" : "start";
     this.context.fillStyle = "black";
   };
 

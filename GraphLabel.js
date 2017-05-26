@@ -33,13 +33,18 @@
     this.text = text;
 
     this.setupContext();
-    this.canvas.width = this.context.measureText(this.text).width * 2;
+    this.canvas.width = this.context.measureText(this.text).width * 3;
     // For some reason, measuring text seems to be clearing all of the font
     // settings, but running this again seems to work well enough:
     this.setupContext();
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.fillText(this.text, this.canvas.width/2, this.canvas.height/2);
+
+    var x = this.canvas.width/2;
+    if (!this.isForX) {
+      x += SIZE/2; // space out away from y axis slightly
+    }
+    this.context.fillText(this.text, x, this.canvas.height/2);
 
     this.scale.set(
       this.canvas.width/DPR * SCALE.x,

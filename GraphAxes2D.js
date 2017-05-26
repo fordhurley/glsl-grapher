@@ -71,8 +71,10 @@
       line.position.z = 1; // under the axes
       this.add(line);
       line.xLabel = new GraphLabel(true);
+      line.xLabel.position.z = 3; // over everything
       this.add(line.xLabel);
       line.yLabel = new GraphLabel(false);
+      line.yLabel.position.z = 3; // over everything
       this.add(line.yLabel);
       this.gridLines.push(line);
     }

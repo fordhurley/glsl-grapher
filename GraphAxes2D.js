@@ -102,7 +102,7 @@
       line.position.y = graphToLocal(y, limits.min.y, limits.max.y);
 
       var text;
-      line.xLabel.visible = x !== 0;
+      line.xLabel.visible = Math.abs(x) > 1e-15;
       if (line.xLabel.visible) {
         text = x.toString();
         if (text.length > 5) {
@@ -113,7 +113,7 @@
         line.xLabel.position.y = graphToLocal(0, limits.min.y, limits.max.y);
       }
 
-      line.yLabel.visible = y !== 0;
+      line.yLabel.visible = Math.abs(y) > 1e-15;
       if (line.yLabel.visible) {
         text = y.toString();
         if (text.length > 5) {

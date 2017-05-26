@@ -7,7 +7,7 @@
   var SIZE = 64; // in px
   // FIXME: this is for scaling from the size of the texture to the canvas. This
   // should come from the graph in some way.
-  var SCALE = new THREE.Vector2(0.5, 1).multiplyScalar(1/2048);
+  var SCALE = new THREE.Vector2(2, 3).multiplyScalar(1/6500);
 
   var GraphLabel = function(isForX) {
     this.isForX = isForX;
@@ -57,7 +57,7 @@
   };
 
   GraphLabel.prototype.setupContext = function() {
-    this.context.font = SIZE*DPR + "px sans-serif";
+    this.context.font = SIZE*DPR + "px \"Helvetica Neue\", Helvetica, sans-serif";
     this.context.textBaseline = this.isForX ? "bottom" : "middle";
     this.context.textAlign = this.isForX ? "center" : "start";
     this.context.fillStyle = "black";

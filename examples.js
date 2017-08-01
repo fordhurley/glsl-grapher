@@ -41,4 +41,23 @@ float y(float x) {
 }`,
     limits: new THREE.Box2(new THREE.Vector2(0, -1), new THREE.Vector2(20, 1)),
   },
+
+  breathe: {
+    shaderFunc: `float breathe(float k, float t) {
+  t = fract(t); // period of 1 for the animation
+  t *= 2.0;
+
+  if (t < 1.0) {
+    return 1.0 - exp(-t/k);
+  } else {
+    t -= 1.0;
+    return exp(-t/k);
+  }
+}
+
+float y(float x) {
+  return breathe(0.1, x);
+}`,
+    limits:  new THREE.Box2(new THREE.Vector2(-0.1, -0.6), new THREE.Vector2(5.1, 1.6)),
+  },
 };
